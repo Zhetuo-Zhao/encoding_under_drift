@@ -10,7 +10,7 @@ import data_plot as dp
 
 input_dim=28*28
 output_dim=28*28
-units=128
+units=28*28
 def build_LSTM_model():
      
     lstm_layer = keras.layers.RNN(
@@ -24,6 +24,18 @@ def build_LSTM_model():
     )
     return model
 
+def build_RNN_model():
+     
+    rnn_layer = keras.layers.RNN(
+        layers.SimpleRNNCell(units), input_shape=(None, input_dim)
+    )
+    model = keras.models.Sequential(
+        [
+            rnn_layer,
+            keras.layers.Dense(output_dim),
+        ]
+    )
+    return model
 
 
 x_train, y_train,x_test, y_test=gd.create_dataset()
@@ -33,11 +45,11 @@ batch_size = 100
 
 model = build_LSTM_model()
 
-model.compile(optimizer='sgd', loss='mse',
+model.compile(optimizer='adam', loss='mse',
               metrics=[tf.keras.metrics.MeanSquaredError()])
 
 model.fit(x_train, y_train, validation_data=(x_test, y_test),
-          batch_size=batch_size, epochs=50)
+          batch_size=batch_size, epochs=10)
 
 
 # %%
