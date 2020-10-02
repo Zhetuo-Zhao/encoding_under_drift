@@ -8,9 +8,13 @@ import pdb
 import generate_dataset as gd
 import data_plot as dp
 
+
+x_train, y_train,x_test, y_test=gd.create_dataset()
+
+# %%
 input_dim=28*28
 output_dim=28*28
-units=28*28
+units=128
 def build_LSTM_model():
      
     lstm_layer = keras.layers.RNN(
@@ -38,9 +42,9 @@ def build_RNN_model():
     return model
 
 
-x_train, y_train,x_test, y_test=gd.create_dataset()
 
-# %%
+
+
 batch_size = 100
 
 model = build_LSTM_model()
@@ -52,7 +56,8 @@ model.fit(x_train, y_train, validation_data=(x_test, y_test),
           batch_size=batch_size, epochs=10)
 
 
-# %%
 y_predicted = model.predict(x_test)
 test_sample=0
 dp.plot_prediction(y_test[test_sample],y_predicted[test_sample])
+
+    

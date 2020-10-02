@@ -25,8 +25,13 @@ def generate_retinal_flow(Data,time_steps,D,NoiseRate):
         displaceX, displaceY = np.random.normal(0, D, time_steps),  np.random.normal(0, 1, time_steps)
         for t in range(time_steps):
             frameT=np.zeros((imgDim,imgDim))
+            
+            if abs(eyeX)>24 or abs(eyeY)>24:
+                eyeX, eyeY= 0,0
+                
             imgT=img0[max(round(eyeX),0):min(round(eyeX)+imgDim,imgDim+1),
                       max(round(eyeY),0):min(round(eyeY)+imgDim,imgDim+1)]
+                
             frameT[max(round(-eyeX),0):min(round(-eyeX)+imgDim,imgDim+1),
                       max(round(-eyeY),0):min(round(-eyeY)+imgDim,imgDim+1)]=imgT
             frameT+=np.random.normal(0, NoiseRate, (imgDim,imgDim))
@@ -55,7 +60,9 @@ def create_dataset():
     x_train,y_train=generate_retinal_flow(x_train0,time_steps,diffussion,NoiseRate)
     x_test,y_test=generate_retinal_flow(x_test0,time_steps,diffussion,NoiseRate)
     
-    return x_train, y_train, x_test, y_test
+    return x_train, y_train, x_test,y_test
+
+
 
 
  
